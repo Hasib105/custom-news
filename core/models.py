@@ -85,7 +85,7 @@ class Category(BaseModel):
 class Article(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     thumbnail = models.ImageField(upload_to='thumbnails', null=True, blank=True)
     tags = models.CharField(max_length=255, blank=True)  # Store tags as a comma-separated string
