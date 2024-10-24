@@ -62,7 +62,8 @@ def custom_slugify(value):
     # Normalize spaces and symbols
     value = re.sub(r'\s+', '-', value)  # Replace spaces with hyphens
     return value.lower()  # Convert to lower case
-    
+
+#
 
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
