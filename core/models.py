@@ -8,7 +8,7 @@ import io
 import os
 import pillow_avif
 import re 
-import unicodedata
+
 
 User = settings.AUTH_USER_MODEL
 
@@ -63,7 +63,7 @@ def custom_slugify(value):
     value = re.sub(r'\s+', '-', value)  # Replace spaces with hyphens
     return value.lower()  # Convert to lower case
 
-#
+
 
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -77,6 +77,7 @@ class Category(BaseModel):
     slug = models.SlugField(unique=True,allow_unicode=True)
     tags = models.CharField(max_length=255, blank=True)  # Store tags as a comma-separated string
     summary = models.TextField(max_length=160, blank=True)
+    featured = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
@@ -106,6 +107,8 @@ class Article(models.Model):
     thumbnail = models.ImageField(upload_to='thumbnails', null=True, blank=True)
     tags = models.CharField(max_length=255, blank=True)  # Store tags as a comma-separated string
     summary = models.TextField(max_length=160, blank=True)
+    views = models.PositiveIntegerField(default=0)
+    featured = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
