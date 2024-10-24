@@ -1,0 +1,217 @@
+{% load compress %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django + Tailwind CSS + Flowbite</title>
+
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'src/output.css' %}">
+    <link rel="stylesheet" href="{% static 'src/custom.css' %}">
+    {% endcompress %}
+
+
+
+</head>
+
+<body class="">
+    <nav class="bg-red-700">
+        <div class="max-w-6xl mx-auto px-2 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 ">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <span class="text-2xl text-white font-semibold">Newssite</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white border border-gray-200">
+            <div class="max-w-6xl mx-auto px-2 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-14">
+                    <div class="hidden md:flex space-x-10">
+                        <a href="#" class="navbar-link">Home</a>
+                        <a href="#" class="navbar-link">News</a>
+                        <a href="#" class="navbar-link">Culture</a>
+                        <a href="#" class="navbar-link">About</a>
+                    </div>
+
+                    <div class="-mr-2 flex md:hidden">
+                        <button data-collapse-toggle="mobile-menu" type="button" class="inline-flex items-center justify-center p-2 text-gray-400 hover:text-gray-500 focus:outline-none" aria-controls="mobile-menu" aria-expanded="false">
+                            <span class="sr-only">Open main menu</span>
+                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden md:hidden" id="mobile-menu">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a href="#" class="block text-gray-700 hover:text-blue-500">Home</a>
+                    <a href="#" class="block text-gray-700 hover:text-blue-500">News</a>
+                    <a href="#" class="block text-gray-700 hover:text-blue-500">Culture</a>
+                    <a href="#" class="block text-gray-700 hover:text-blue-500">About</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+
+    
+    <div class="max-w-6xl mx-auto px-2 sm:px-6 lg:px-8 mt-4 mb-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Left Section - More in Food -->
+            <div class="col-span-2">
+                <h2 class="text-2xl font-bold mb-4">More in <span class="font-black">Food</span></h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Article Item -->
+                    <div class="bg-white shadow rounded overflow-hidden">
+                        <img src="https://via.placeholder.com/300" alt="Cheese" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold">The real reason cheese is yellow</h3>
+                        </div>
+                    </div>
+                    <!-- Article Item -->
+                    <div class="bg-white shadow rounded overflow-hidden">
+                        <img src="https://via.placeholder.com/300" alt="Dr Pepper" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold">Wait, why is Dr Pepper so popular now?</h3>
+                        </div>
+                    </div>
+                    <!-- Article Item -->
+                    <div class="bg-white shadow rounded overflow-hidden">
+                        <img src="https://via.placeholder.com/300" alt="Inflammation" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold">How bad is inflammation really?</h3>
+                        </div>
+                    </div>
+                    <!-- Article Item -->
+                    <div class="bg-white shadow rounded overflow-hidden">
+                        <img src="https://via.placeholder.com/300" alt="Chicken Nuggets" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold">Why America hates to love chicken nuggets</h3>
+                        </div>
+                    </div>
+                    <!-- Article Item -->
+                    <div class="bg-white shadow rounded overflow-hidden">
+                        <img src="https://via.placeholder.com/300" alt="Medicine" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold">When did sodas, teas, and tonics become medicine?</h3>
+                        </div>
+                    </div>
+                    <!-- Article Item -->
+                    <div class="bg-white shadow rounded overflow-hidden">
+                        <img src="https://via.placeholder.com/300" alt="Sauce" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold">America’s spicy, smoky, sweet sauce obsession, explained</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Section - The Latest -->
+            <div>
+                <h2 class="text-2xl font-bold mb-4">The Latest</h2>
+                <div class="space-y-4">
+                    <!-- News Item -->
+                    <div class="flex flex-col border-b pb-4">
+                        <span class="text-xs text-gray-500">TWO HOURS AGO</span>
+                        <a href="#" class="text-lg font-semibold hover:underline">The surprising source of kids’ stress lurking on parents’ phones</a>
+                    </div>
+                    <!-- News Item -->
+                    <div class="flex flex-col border-b pb-4">
+                        <span class="text-xs text-gray-500">4:45 PM GMT+6</span>
+                        <a href="#" class="text-lg font-semibold hover:underline">Is my deli sandwich going to kill me?</a>
+                    </div>
+                    <!-- News Item -->
+                    <div class="flex flex-col border-b pb-4">
+                        <span class="text-xs text-gray-500">4:15 PM GMT+6</span>
+                        <a href="#" class="text-lg font-semibold hover:underline">15 ways the next president could affect the climate and your life</a>
+                    </div>
+                    <!-- News Item -->
+                    <div class="flex flex-col border-b pb-4">
+                        <span class="text-xs text-gray-500">2:00 AM GMT+6</span>
+                        <a href="#" class="text-lg font-semibold hover:underline">A world without passwords is in sight</a>
+                    </div>
+                    <!-- News Item -->
+                    <div class="flex flex-col border-b pb-4">
+                        <span class="text-xs text-gray-500">OCT 23</span>
+                        <a href="#" class="text-lg font-semibold hover:underline">Every country is negotiating a plan to save nature. Except the US.</a>
+                    </div>
+                    <!-- News Item -->
+                    <div class="flex flex-col">
+                        <span class="text-xs text-gray-500">OCT 23</span>
+                        <a href="#" class="text-lg font-semibold hover:underline">Elon Musk says he’s giving away $1 million a day to voters. Is that legal?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% block content %} {% endblock content %}
+    </div>
+
+
+     <!-- Footer -->
+     <footer>
+        <!-- Red Row with Logo -->
+        <div class="bg-red-700 py-4">
+            <div class="max-w-6xl mx-auto px-2 sm:px-6 lg:px-8 ">
+                <div class="flex-shrink-0">
+                    <span class="text-2xl text-white font-semibold">Newssite</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gray Background Row -->
+        <div class="bg-zinc-800 text-white py-8">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div>
+                        <h5 class="font-bold mb-4">About Us</h5>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="hover:underline">Our Story</a></li>
+                            <li><a href="#" class="hover:underline">Careers</a></li>
+                            <li><a href="#" class="hover:underline">Contact Us</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-bold mb-4">Categories</h5>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="hover:underline">News</a></li>
+                            <li><a href="#" class="hover:underline">Culture</a></li>
+                            <li><a href="#" class="hover:underline">Technology</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-bold mb-4">Follow Us</h5>
+                        <ul class="flex space-x-4">
+                            <li><a href="#"><img src="icon-facebook.png" alt="Facebook" class="w-6 h-6"></a></li>
+                            <li><a href="#"><img src="icon-twitter.png" alt="Twitter" class="w-6 h-6"></a></li>
+                            <li><a href="#"><img src="icon-instagram.png" alt="Instagram" class="w-6 h-6"></a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-bold mb-4">Legal</h5>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="hover:underline">Privacy Policy</a></li>
+                            <li><a href="#" class="hover:underline">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-8 border-t border-gray-600 pt-4 text-center">
+                    <p>© 2024 Your Company Name. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+</body>
+
+</html>
