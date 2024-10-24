@@ -66,10 +66,14 @@ class BaseModel(models.Model):
 class Category(BaseModel):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
-    description = models.TextField(null=True, blank=True)
+    tags = models.CharField(max_length=255, blank=True)  # Store tags as a comma-separated string
+    summary = models.TextField(max_length=160, blank=True)
 
     def __str__(self):
         return self.title
+
+    def get_tags_list(self):
+        return [tag.strip() for tag in self.tags.split(',')] if self.tags else []
 
     class Meta:
         verbose_name_plural = 'Categories'
