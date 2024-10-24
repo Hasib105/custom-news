@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils.text import slugify
 from django.conf import settings
 from django_quill.fields import QuillField
 from django.core.files.images import get_image_dimensions
@@ -8,6 +7,8 @@ from PIL import Image
 import io
 import os
 import pillow_avif
+import re 
+import unicodedata
 
 User = settings.AUTH_USER_MODEL
 
@@ -56,6 +57,13 @@ def convert_image(image_field, format=None, quality=None):
 
     return converted_image
 
+
+def custom_slugify(value):
+    # Normalize spaces and symbols
+    value = re.sub(r'\s+', '-', value)  # Replace spaces with hyphens
+    return value.lower()  # Convert to lower case
+    
+
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -65,7 +73,7 @@ class BaseModel(models.Model):
 
 class Category(BaseModel):
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, unique=True)
+    slug = models.SlugField(unique=True,allow_unicode=True)
     tags = models.CharField(max_length=255, blank=True)  # Store tags as a comma-separated string
     summary = models.TextField(max_length=160, blank=True)
 
@@ -79,16 +87,19 @@ class Category(BaseModel):
         verbose_name_plural = 'Categories'
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
-            if Category.objects.filter(slug=self.slug).exists():
-                # Ensure uniqueness by appending a unique identifier
-                self.slug += str(Category.objects.latest('id').id + 1)
+        # Generate unique slug based on the name field
+        slug = custom_slugify(self.title)
+        counter = 1
+        while Category.objects.filter(slug=slug).exists():
+            slug = f"{custom_slugify(self.title)}-{counter}"
+            counter += 1
+
+        self.slug = slug
         super().save(*args, **kwargs)
 
 class Article(models.Model):
     title = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True,allow_unicode=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     thumbnail = models.ImageField(upload_to='thumbnails', null=True, blank=True)
@@ -102,6 +113,16 @@ class Article(models.Model):
         return [tag.strip() for tag in self.tags.split(',')] if self.tags else []
 
     def save(self, *args, **kwargs):
+        # Generate unique slug based on the name field
+        slug = custom_slugify(self.title)
+        counter = 1
+        while Article.objects.filter(slug=slug).exists():
+            slug = f"{custom_slugify(self.title)}-{counter}"
+            counter += 1
+
+        self.slug = slug
+
+        # Convert image to WebP or AVIF format
         if self.thumbnail and not self.thumbnail.name.endswith((".webp", ".avif")):
             converted_image = convert_image(self.thumbnail)
             self.thumbnail = converted_image
