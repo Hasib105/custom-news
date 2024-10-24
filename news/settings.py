@@ -82,6 +82,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_processors.category_context',
             ],
         },
     },
@@ -134,23 +135,42 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+# Static files
 STATIC_URL = '/static/'
 
 # Directories to search for static files
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),  
+    os.path.join(BASE_DIR, 'static'),  # This is where your additional static files are stored
 ]
 
+# Directory where collected static files will be placed
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Whitenoise static files storage configuration
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+else:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
-COMPRESS_ROOT = BASE_DIR / 'static'
+# Static file finders and compression settings
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+]
 
-COMPRESS_ENABLED = not DEBUG
+# Compressor settings
+COMPRESS_ROOT = STATIC_ROOT
+COMPRESS_ENABLED = True
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.css_default.CssAbsoluteFilter',
+    'compressor.filters.cssmin.rCSSMinFilter',
+]
+COMPRESS_JS_FILTERS = [
+    'compressor.filters.jsmin.JSMinFilter',
+]
 
-STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
