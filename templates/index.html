@@ -11,8 +11,8 @@
         {% else %}
         <img src="{% static 'img/ajker-saradin.jpg' %}" alt="{{ first_article.title }}" class="w-full h-64 object-cover rounded-md">
         {% endif %}
-        <div class="p-4">
-            <h2 class="text-2xl font-bold mb-2">{{ first_article.title }}</h2>
+        <div class="pt-4 pb-4">
+            <a href="{{ first_article.slug }}" class="text-gray-800 hover:underline text-2xl font-bold mb-2">{{ first_article.title }}</a>
             <p class="text-gray-700">{{ first_article.summary }}</p>
         </div>
     </div>
@@ -27,7 +27,7 @@
              <img src="{% static 'img/ajker-saradin.jpg' %}" alt="{{ first_article.title }}" class="w-48 h-48 object-cover mx-auto rounded-md">
             {% endif %}
             <div class="p-4">
-                <h3 class="text-lg font-bold mb-2">{{ news.title }}</h3>
+                <a href="{{ news.slug }}" class="text-gray-800 hover:underline text-lg font-bold mb-2">{{ news.title }}</a>
                 <p class="text-gray-700">{{ news.summary }}</p>
             </div>
         </div>
@@ -47,7 +47,7 @@
             {% else %}
              <img src="{% static 'img/ajker-saradin.jpg' %}" alt="{{ first_article.title }}" class="w-16 h-16 object-cover mr-4 rounded-md">
             {% endif %}
-            <h3 class="text-lg font-bold">{{ news.title }}</h3>
+            <a href="{{ news.slug }}" class="text-gray-800 hover:underline text-lg font-bold mb-2">{{ news.title }}</a>
         </div>
         <p class="text-gray-700 mt-2">{{ news.summary }}</p>
     </div>
@@ -67,9 +67,7 @@
             {% else %}
                 <img src="{% static 'img/ajker-saradin.jpg' %}" alt="{{ main_article.title }}" class="w-full h-64 object-cover rounded-md">
             {% endif %}
-            <h1 class="mt-4 text-3xl font-bold">
-                {{ main_article.title }}
-            </h1>
+            <a href="{{ main_article.slug }}" class="text-gray-800 hover:underline text-3xl font-bold mb-2 pt-4">{{ main_article.title }}</a>
             <p class="mt-2 text-lg">
                 {{ main_article.summary }}
             </p>
@@ -82,7 +80,7 @@
         {% for article in additional_articles %}
             <div class="flex items-start justify-between border-b pb-4">
                 <div class="w-3/4">
-                    <h2 class="text-xl font-bold">{{ article.title }}</h2>
+                    <a href="{{ article.slug }}" class="text-gray-800 hover:underline text-xl font-bold mb-2">{{ article.title }}</a>
                     <p class="mt-2 text-sm text-gray-500">{{ article.summary }}</p>
                 </div>
                 {% if article.thumbnail %}
