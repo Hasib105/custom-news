@@ -6,7 +6,7 @@
     {% if first_article %}
     <div class="bg-white overflow-hidden">
         {% if first_article.thumbnail %}
-        <img src="{{ first_article.thumbnail.url }}" alt="{{ first_article.title }}" class="w-full h-64 object-cover">
+        <img src="{{ first_article.thumbnail.url }}" alt="{{ first_article.title }}" class="w-full h-64 object-cover rounded-md">
         {% endif %}
         <div class="p-4">
             <h2 class="text-2xl font-bold mb-2">{{ first_article.title }}</h2>
@@ -19,7 +19,7 @@
         {% for news in second_articles %}
         <div class="bg-white overflow-hidden items-start">
             {% if news.thumbnail %}
-            <img src="{{ news.thumbnail.url }}" alt="{{ news.title }}" class="w-48 h-48 object-cover mx-auto">
+            <img src="{{ news.thumbnail.url }}" alt="{{ news.title }}" class="w-48 h-48 object-cover mx-auto rounded-md">
             {% endif %}
             <div class="p-4">
                 <h3 class="text-lg font-bold mb-2">{{ news.title }}</h3>
@@ -36,14 +36,39 @@
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
     {% for news in third_articles %}
     <div class="bg-white overflow-hidden">
-        <div class="flex items-center">
+        <div class="flex items-start">
             {% if news.thumbnail %}
-            <img src="{{ news.thumbnail.url }}" alt="{{ news.title }}" class="w-16 h-16 object-cover mr-4">
+            <img src="{{ news.thumbnail.url }}" alt="{{ news.title }}" class="w-16 h-16 object-cover mr-4 rounded-md">
             {% endif %}
             <h3 class="text-lg font-bold">{{ news.title }}</h3>
         </div>
         <p class="text-gray-700 mt-2">{{ news.summary }}</p>
     </div>
+    {% endfor %}
+</div>
+
+
+<div class="mt-4">
+    {% for category_data in categories_with_articles %}
+        <div class="category-section mb-10">
+            <div class="flex justify-between items-center mb-4">
+                <h1 class="text-center text-xl font-bold mt-2">{{ category_data.category.title }}</h1>
+                <a href="#" class="font-light underline">MORE</a>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {% for article in category_data.articles %}
+                    <div class="article bg-white  rounded-lg p-4 ">
+                        {% if article.thumbnail %}
+                            <img src="{{ article.thumbnail.url }}" alt="{{ article.title }}" class="w-full h-48 object-cover rounded-md mb-2">
+                        {% endif %}
+                        <h3 class="text-lg font-semibold mb-2">
+                            <a href="{{ article.slug }}" class="text-gray-800 hover:underline">{{ article.title }}</a>
+                        </h3>
+
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     {% endfor %}
 </div>
 
