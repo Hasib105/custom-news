@@ -12,6 +12,7 @@ django-quill-editor = "*"
 pillow-avif-plugin = "*"
 django-unfold = "*"
 django-compressor = "*"
+faker = "*"
 
 [dev-packages]
 
