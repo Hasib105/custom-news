@@ -10,6 +10,10 @@ def index(request):
     second_articles = latest_news[1:3]
     third_articles = latest_news[3:]
 
+    featured_articles = Article.objects.filter(featured=True).only('title','slug','thumbnail','summary').order_by('-id')[:5]
+    main_article = featured_articles.first()  
+    additional_articles = featured_articles[1:]  
+
     categories_with_articles = []
     categories = Category.objects.filter(featured=True).only('title', 'slug')
     for category in categories:
@@ -25,6 +29,8 @@ def index(request):
         'second_articles': second_articles,
         'third_articles': third_articles,
         'categories_with_articles': categories_with_articles,
+        'main_article': main_article,
+        'additional_articles': additional_articles
     }
     
     return render(request, 'index.html', context)
