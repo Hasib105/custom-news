@@ -1,11 +1,12 @@
 from .models import Category , Article
+from django.utils import timezone
 
 def category_context(request):
     categories = Category.objects.only('title','slug')
-    featured_category = Category.objects.filter(featured=True).last()
+    exclusive_category = Category.objects.filter(exclusive=True).last()
     context = {
         'categories': categories,
-        'featured_category': featured_category
+        'exclusive_category': exclusive_category
     }
 
     return context
@@ -19,8 +20,10 @@ def latest_articles(request):
     return context
 
 
+
 def most_popular_articles(request):
-    most_popular_articles = Article.objects.only('title','slug').order_by('-views')[:7]
+    yesterday = timezone.now() - timezone.timedelta(days=1)
+    most_popular_articles = Article.objects.filter(created_at__gte=yesterday).only('title','slug').order_by('-views')[:7]
     context = {
         'most_popular_articles': most_popular_articles
     }
