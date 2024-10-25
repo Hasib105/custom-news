@@ -99,7 +99,7 @@ class Category(BaseModel):
         self.slug = slug
         super().save(*args, **kwargs)
 
-class Article(models.Model):
+class Article(BaseModel):
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True,allow_unicode=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
@@ -132,7 +132,7 @@ class Article(models.Model):
             self.thumbnail = converted_image
         super().save(*args, **kwargs)
 
-class ArticleContent(models.Model):
+class ArticleContent(BaseModel):
     article = models.ForeignKey(Article, related_name='contents', on_delete=models.CASCADE)
     title = models.CharField(max_length=255, null=True, blank=True)
     image = models.ImageField(upload_to='article_images/', blank=True, null=True)  # For images
