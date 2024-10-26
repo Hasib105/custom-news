@@ -54,10 +54,9 @@ def index(request):
 
 def article_details(request, slug):
     article = get_object_or_404(Article, slug=slug)
-    latest_article = Article.objects.only('title','slug').order_by('-created_at')[:6]
-    related_articles = Article.objects.filter(category=article.category).only('title','slug','thumbnail','summary').order_by('-created_at')[:6]
-    print(related_articles.count())
-    print(latest_article.count())
+    latest_article = Article.objects.exclude(id=article.id).only('title','slug').order_by('-created_at')[:6]
+    related_articles = Article.objects.filter(category=article.category).exclude(id=article.id).only('title','slug','thumbnail','summary').order_by('-created_at')[:6]
+
 
     article.views += 1
     article.save()
