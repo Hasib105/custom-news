@@ -1,0 +1,50 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold mt-8">{{ category.title }}</h1>
+    <p class="text-gray-600 mt-2">{{ category.description }}</p>
+
+    <div class="mt-6">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
+            {% for article in page_obj %}
+            <a href="{{ article.get_absolute_url }}" class="block">
+                <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                    {% if article.thumbnail %}
+                    <img src="{{ article.thumbnail.url }}" alt="{{ article.title }}" class="w-full h-48 object-cover">
+                    {% else %}
+                    <img src="{% static 'img/ajker-saradin.jpg' %}" alt="Default image" class="w-full h-48 object-cover">
+                    {% endif %}
+                    <div class="p-4">
+                        <h3 class="text-lg font-bold hover:underline">{{ article.title }}</h3>
+                        <p class="text-gray-700 mt-2">{{ article.summary }}</p>
+                    </div>
+                </div>
+            </a>
+            {% empty %}
+            <p class="text-gray-500">No articles found in this category.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mt-6">
+        {% if page_obj.has_other_pages %}
+        <nav class="flex justify-between">
+            <div>
+                {% if page_obj.has_previous %}
+                <a href="?page=1" class="text-red-700 hover:underline">First</a>
+                <a href="?page={{ page_obj.previous_page_number }}" class="text-red-700 hover:underline">Previous</a>
+                {% endif %}
+            </div>
+            <div>
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="text-red-700 hover:underline">Next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="text-red-700 hover:underline">Last</a>
+                {% endif %}
+            </div>
+        </nav>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -11,14 +11,6 @@ def category_context(request):
 
     return context
 
-def latest_articles(request):
-    latest_articles = Article.objects.only('title','slug').order_by('-created_at')[:6]
-    context = {
-        'latest_articles': latest_articles
-    }
-
-    return context
-
 
 
 def most_popular_articles(request):
