@@ -7,9 +7,10 @@ from PIL import Image
 import io
 import os
 import pillow_avif
-import re 
 from django.urls import reverse
-import unicodedata
+from unidecode import unidecode
+from django.utils.text import slugify
+import datetime
 
 User = settings.AUTH_USER_MODEL
 
@@ -61,16 +62,6 @@ def convert_image(image_field, format=None, quality=None):
 
 
 
-def custom_slugify(value):
-    # Normalize the string to remove accents and special characters
-    value = unicodedata.normalize('NFKD', value)
-    value = re.sub(r'\s+', '-', value)  
-    value = re.sub(r'-+', '-', value)  
-    
-    value = value.strip('-')
-    
-    # Convert to lowercase
-    return value.lower()
 
 
 
@@ -99,15 +90,14 @@ class Category(BaseModel):
         verbose_name_plural = 'Categories'
 
     def save(self, *args, **kwargs):
-        # Generate unique slug based on the name field
-        slug = custom_slugify(self.title)
-        counter = 1
-        while Category.objects.filter(slug=slug).exists():
-            slug = f"{custom_slugify(self.title)}-{counter}"
-            counter += 1
-
-        self.slug = slug
+        if not self.slug:
+            slug_str = f"{self.title}-{datetime.datetime.now()}"
+            self.slug = slugify(slug_str, allow_unicode=True) 
         super().save(*args, **kwargs)
+
+    
+    def get_absolute_url(self):
+        return reverse("category_detail", kwargs={"slug": self.slug})
 
 class Article(BaseModel):
     title = models.CharField(max_length=255)
@@ -127,25 +117,18 @@ class Article(BaseModel):
         return [tag.strip() for tag in self.tags.split(',')] if self.tags else []
 
     def save(self, *args, **kwargs):
-            # Generate a unique slug
-            slug = custom_slugify(self.title)
-            counter = 1
-
-            # Ensure the slug is unique in the database
-            while Article.objects.filter(slug=slug).exists():
-                slug = f"{custom_slugify(self.title)}-{counter}"
-                counter += 1
-
-            self.slug = slug
-
+        if not self.slug:
+            slug_str = f"{self.title}-{datetime.datetime.now()}"
+            self.slug = slugify(slug_str, allow_unicode=True) 
+        
             # Check if thumbnail needs conversion
-            if self.thumbnail:
-                if not self.thumbnail.name.endswith((".webp", ".avif")):
-                    converted_image = convert_image(self.thumbnail)
-                    self.thumbnail = converted_image
+        if self.thumbnail:
+            if not self.thumbnail.name.endswith((".webp", ".avif")):
+                converted_image = convert_image(self.thumbnail)
+                self.thumbnail = converted_image
 
             # Save the instance
-            super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
         
     def get_absolute_url(self):
         return reverse("article_details", kwargs={"slug": self.slug})

@@ -38,7 +38,7 @@
             <div class="flex justify-between items-center h-16 ">
                 <div class="flex">
                     <div class="flex-shrink-0">
-                        <span class="text-2xl text-white font-semibold">Newssite</span>
+                        <a href="/" class="text-2xl text-white font-semibold">Newssite</a>
                     </div>
                 </div>
             </div>
@@ -50,10 +50,10 @@
                     <div class="hidden md:flex space-x-10">
                         <a href="#" class="navbar-link">Home</a>
                         {% if exclusive_category %}
-                        <a href="#" class="navbar-link">{{exclusive_category}}</a>
+                        <a href="{{exclusive_category.get_absolute_url}}" class="navbar-link">{{exclusive_category}}</a>
                         {% endif %}
                         {% for category in categories %}
-                        <a href="#" class="navbar-link">{{category}}</a>
+                        <a href="{{category.get_absolute_url}}" class="navbar-link">{{category}}</a>
                         {% endfor %}
                     </div>
 

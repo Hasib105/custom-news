@@ -1,6 +1,40 @@
 {% extends "layouts/base.html" %}
+{% load static %}
 
 {% block content %}
 
-aaa
-{% endblock  %}
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <!-- Left Section - Featured Category -->
+    <div class="col-span-2">
+        <h2 class="text-2xl font-bold mb-4">Related Articles <span class="font-black">{{ category_name }}</span></h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% for article in related_articles %}
+            <div class="bg-white   overflow-hidden">
+                {% if article.thumbnail %}
+                <img src="{{ article.thumbnail.url }}" alt="{{ article.title }}" class="w-48 h-48 object-cover rounded mx-auto">
+                {% else %}
+                <img src="{% static 'img/ajker-saradin.jpg' %}" alt="{{ article.title }}" class="w-48 h-48 object-cover rounded mx-auto">
+                {% endif %}
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold">{{ article.title }}</h3>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Right Section - The Latest News -->
+    <div>
+        <h2 class="text-2xl font-bold mb-4">The Latest</h2>
+        <div class="space-y-4">
+            {% for news in latest_article %}
+            <div class="flex flex-col border-b pb-4">
+                <span class="text-xs text-gray-500">{{ news.timestamp|date:"g:i A P" }}</span>
+                <a href="{{ news.get_absolute_url }}" class="text-lg font-semibold hover:underline">{{ news.title }}</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

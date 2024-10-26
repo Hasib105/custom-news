@@ -25,7 +25,6 @@ def index(request):
     first_article = latest_news[0] if latest_news else None
     second_articles = latest_news[1:3]
     third_articles = latest_news[3:]
-    print(first_article)
 
     featured_articles = Article.objects.filter(featured=True).only('title','slug','thumbnail','summary').order_by('-id')[:5]
     main_article = featured_articles.first()  
@@ -54,10 +53,11 @@ def index(request):
 
 
 def article_details(request, slug):
-    print(slug)
     article = get_object_or_404(Article, slug=slug)
     latest_article = Article.objects.only('title','slug').order_by('-created_at')[:6]
     related_articles = Article.objects.filter(category=article.category).only('title','slug','thumbnail','summary').order_by('-created_at')[:6]
+    print(related_articles.count())
+    print(latest_article.count())
 
     article.views += 1
     article.save()
@@ -70,11 +70,10 @@ def article_details(request, slug):
 
 
 
-
 def category_detail(request, slug):
     category = get_object_or_404(Category, slug=slug)
     articles = Article.objects.filter(category=category).only('title','slug','thumbnail','summary').order_by('-created_at')
-    paginator = Paginator(articles, 26)
+    paginator = Paginator(articles, 1)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {

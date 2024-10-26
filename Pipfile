@@ -13,6 +13,8 @@ pillow-avif-plugin = "*"
 django-unfold = "*"
 django-compressor = "*"
 faker = "*"
+unidecode = "*"
+python-slugify = "*"
 
 [dev-packages]
 
