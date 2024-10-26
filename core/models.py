@@ -8,7 +8,8 @@ import io
 import os
 import pillow_avif
 import re 
-
+from django.urls import reverse
+import unicodedata
 
 User = settings.AUTH_USER_MODEL
 
@@ -58,10 +59,18 @@ def convert_image(image_field, format=None, quality=None):
     return converted_image
 
 
+
+
 def custom_slugify(value):
-    # Normalize spaces and symbols
-    value = re.sub(r'\s+', '-', value)  # Replace spaces with hyphens
-    return value.lower()  # Convert to lower case
+    # Normalize the string to remove accents and special characters
+    value = unicodedata.normalize('NFKD', value)
+    value = re.sub(r'\s+', '-', value)  
+    value = re.sub(r'-+', '-', value)  
+    
+    value = value.strip('-')
+    
+    # Convert to lowercase
+    return value.lower()
 
 
 
@@ -102,11 +111,11 @@ class Category(BaseModel):
 
 class Article(BaseModel):
     title = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True,allow_unicode=True)
+    slug = models.SlugField(unique=True, allow_unicode=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     thumbnail = models.ImageField(upload_to='thumbnails', null=True, blank=True)
-    tags = models.CharField(max_length=255, blank=True)  # Store tags as a comma-separated string
+    tags = models.CharField(max_length=255, blank=True)
     summary = models.TextField(max_length=160, blank=True)
     views = models.PositiveIntegerField(default=0)
     featured = models.BooleanField(default=False)
@@ -118,20 +127,30 @@ class Article(BaseModel):
         return [tag.strip() for tag in self.tags.split(',')] if self.tags else []
 
     def save(self, *args, **kwargs):
-        # Generate unique slug based on the name field
-        slug = custom_slugify(self.title)
-        counter = 1
-        while Article.objects.filter(slug=slug).exists():
-            slug = f"{custom_slugify(self.title)}-{counter}"
-            counter += 1
+            # Generate a unique slug
+            slug = custom_slugify(self.title)
+            counter = 1
 
-        self.slug = slug
+            # Ensure the slug is unique in the database
+            while Article.objects.filter(slug=slug).exists():
+                slug = f"{custom_slugify(self.title)}-{counter}"
+                counter += 1
 
-        # Convert image to WebP or AVIF format
-        if self.thumbnail and not self.thumbnail.name.endswith((".webp", ".avif")):
-            converted_image = convert_image(self.thumbnail)
-            self.thumbnail = converted_image
-        super().save(*args, **kwargs)
+            self.slug = slug
+
+            # Check if thumbnail needs conversion
+            if self.thumbnail:
+                if not self.thumbnail.name.endswith((".webp", ".avif")):
+                    converted_image = convert_image(self.thumbnail)
+                    self.thumbnail = converted_image
+
+            # Save the instance
+            super().save(*args, **kwargs)
+        
+    def get_absolute_url(self):
+        return reverse("article_details", kwargs={"slug": self.slug})
+
+
 
 class ArticleContent(BaseModel):
     article = models.ForeignKey(Article, related_name='contents', on_delete=models.CASCADE)

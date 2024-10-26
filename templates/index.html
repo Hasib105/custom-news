@@ -12,7 +12,7 @@
         <img src="{% static 'img/ajker-saradin.jpg' %}" alt="{{ first_article.title }}" class="w-full h-64 object-cover rounded-md">
         {% endif %}
         <div class="pt-4 pb-4">
-            <a href="{{ first_article.slug }}" class="text-gray-800 hover:underline text-2xl font-bold mb-2">{{ first_article.title }}</a>
+            <a href="{{ first_article.get_absolute_url }}" class="text-gray-800 hover:underline text-2xl font-bold mb-2">{{ first_article.title }}</a>
             <p class="text-gray-700">{{ first_article.summary }}</p>
         </div>
     </div>
