@@ -46,8 +46,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'django_quill',
     'compressor',
+    'htmlmin',
 
 
 
@@ -57,6 +59,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'htmlmin.middleware.HtmlMinifyMiddleware',
     'django.middleware.security.SecurityMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -183,3 +186,11 @@ AUTH_USER_MODEL = 'account.User'
 
 IMAGE_CONVERSION_FORMAT = os.getenv("IMAGE_CONVERSION_FORMAT", "avif")
 IMAGE_CONVERSION_QUALITY = int(os.getenv("IMAGE_CONVERSION_QUALITY", "75"))
+
+
+HTMLMIN = {
+    'remove_comments': True,  # Remove HTML comments
+    'remove_empty_space': True,  # Remove extra white space
+    'minify_css': True,  # Minify CSS
+    'minify_js': True,  # Minify JavaScript
+}

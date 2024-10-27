@@ -15,6 +15,7 @@ django-compressor = "*"
 faker = "*"
 unidecode = "*"
 python-slugify = "*"
+django-htmlmin = "*"
 
 [dev-packages]
 

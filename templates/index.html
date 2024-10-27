@@ -5,32 +5,36 @@
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <!-- First Half: Single Card -->
     {% if first_article %}
-    <div class="bg-white overflow-hidden">
-        {% if first_article.thumbnail %}
-        <img src="{{ first_article.thumbnail.url }}" alt="{{ first_article.title }}" class="w-full h-64 object-cover rounded-md">
-        {% else %}
-        <img src="{% static 'img/ajker-saradin.jpg' %}" alt="{{ first_article.title }}" class="w-full h-64 object-cover rounded-md">
-        {% endif %}
-        <div class="pt-4 pb-4">
-            <a href="{{ first_article.get_absolute_url }}" class="text-gray-800 hover:underline text-2xl font-bold mb-2">{{ first_article.title }}</a>
-            <p class="text-gray-700">{{ first_article.summary }}</p>
+     <a href="{{ first_article.get_absolute_url }}" class="block">
+        <div class="bg-white overflow-hidden">
+            {% if first_article.thumbnail %}
+            <img src="{{ first_article.thumbnail.url }}" alt="{{ first_article.title }}" class="w-full h-64 object-cover rounded-md">
+            {% else %}
+            <img src="{% static 'img/ajker-saradin.jpg' %}" alt="{{ first_article.title }}" class="w-full h-64 object-cover rounded-md">
+            {% endif %}
+            <div class="pt-4 pb-4">
+                <h3 class="text-gray-800 hover:underline text-2xl font-bold mb-2">{{ first_article.title }}</h3>
+                <p class="text-gray-700">{{ first_article.summary }}</p>
+            </div>
         </div>
-    </div>
+    </a>
 
     <!-- Second Half: Two Cards -->
     <div class="grid grid-cols-2 gap-3">
         {% for news in second_articles %}
-        <div class="bg-white overflow-hidden items-start">
-            {% if news.thumbnail %}
-            <img src="{{ news.thumbnail.url }}" alt="{{ news.title }}" class="w-48 h-48 object-cover mx-auto rounded-md">
-            {% else %}
-             <img src="{% static 'img/ajker-saradin.jpg' %}" alt="{{ first_article.title }}" class="w-48 h-48 object-cover mx-auto rounded-md">
-            {% endif %}
-            <div class="p-4">
-                <a href="{{ news.slug }}" class="text-gray-800 hover:underline text-lg font-bold mb-2">{{ news.title }}</a>
-                <p class="text-gray-700">{{ news.summary }}</p>
+        <a href="{{ news.get_absolute_url }}" class="block">
+            <div class="bg-white overflow-hidden items-start">
+                {% if news.thumbnail %}
+                <img src="{{ news.thumbnail.url }}" alt="{{ news.title }}" class="w-48 h-48 object-cover mx-auto rounded-md">
+                {% else %}
+                <img src="{% static 'img/ajker-saradin.jpg' %}" alt="{{ first_article.title }}" class="w-48 h-48 object-cover mx-auto rounded-md">
+                {% endif %}
+                <div class="p-4">
+                    <h3 class="text-gray-800 hover:underline text-lg font-bold mb-2">{{ news.title }}</h3>
+                    <p class="text-gray-700">{{ news.summary }}</p>
+                </div>
             </div>
-        </div>
+        </a>
         {% endfor %}
     </div>
     {% endif %}
@@ -40,17 +44,20 @@
 
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 mb-6">
     {% for news in third_articles %}
-    <div class="bg-white overflow-hidden">
-        <div class="flex items-start">
-            {% if news.thumbnail %}
-            <img src="{{ news.thumbnail.url }}" alt="{{ news.title }}" class="w-16 h-16 object-cover mr-4 rounded-md">
-            {% else %}
-             <img src="{% static 'img/ajker-saradin.jpg' %}" alt="{{ first_article.title }}" class="w-16 h-16 object-cover mr-4 rounded-md">
-            {% endif %}
-            <a href="{{ news.slug }}" class="text-gray-800 hover:underline text-lg font-bold mb-2">{{ news.title }}</a>
+    <a href="{{ news.get_absolute_url }}" class="block">
+        <div class="bg-white overflow-hidden">
+            <div class="flex items-start">
+                {% if news.thumbnail %}
+                <img src="{{ news.thumbnail.url }}" alt="{{ news.title }}" class="w-16 h-16 object-cover mr-4 rounded-md">
+                {% else %}
+                <img src="{% static 'img/ajker-saradin.jpg' %}" alt="{{ news.title }}" class="w-16 h-16 object-cover mr-4 rounded-md">
+                {% endif %}
+                <h3 class="text-gray-800 hover:underline text-lg font-bold mt-2">{{ news.title }}</h3>
+            </div>
+            
+            <p class="text-gray-700 mt-2">{{ news.summary }}</p>
         </div>
-        <p class="text-gray-700 mt-2">{{ news.summary }}</p>
-    </div>
+    </a>
     {% endfor %}
 </div>
 
@@ -99,7 +106,7 @@
         <div class="category-section mb-10">
             <div class="flex justify-between items-center mb-4">
                 <h1 class="text-center text-xl font-bold mt-2">{{ category_data.category.title }}</h1>
-                <a href="#" class="font-light underline">MORE</a>
+                <a href="{{ category_data.category.get_absolute_url }}" class="font-light underline">MORE</a>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {% for article in category_data.articles %}
