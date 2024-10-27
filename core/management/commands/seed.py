@@ -1,17 +1,16 @@
-# your_app/management/commands/generate_data.py
-
 import random
 from django.core.management.base import BaseCommand
 from django.utils.text import slugify
 from faker import Faker
 from django.contrib.auth import get_user_model
-from core.models import Category, Article
+from core.models import Category, Article, ArticleContent  # Make sure ArticleContent is imported
+import datetime
 
 User = get_user_model()
 fake = Faker()
 
 class Command(BaseCommand):
-    help = "Generate 10 categories, 20 articles, and create an admin user."
+    help = "Generate 10 categories, 20 articles, 100 article contents, and create an admin user."
 
     def handle(self, *args, **kwargs):
         # Create superuser named "admin" with password "admin" if not exists
@@ -45,6 +44,7 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(f"Created Category: {title}"))
 
         # Create 20 articles
+        articles = []
         for _ in range(20):
             title = fake.sentence(nb_words=5)
             article, created = Article.objects.get_or_create(
@@ -59,6 +59,19 @@ class Command(BaseCommand):
                     'featured': random.choice([True, False]),
                 },
             )
+            articles.append(article)
             self.stdout.write(self.style.SUCCESS(f"Created Article: {title}"))
 
-        self.stdout.write(self.style.SUCCESS("Successfully generated 10 categories, 20 articles, and created an admin user."))
+        # Create 5 ArticleContents for each Article (100 in total for 20 articles)
+        for article in articles:
+            for _ in range(5):  # Adjust this if you want more or fewer contents per article
+                content = ArticleContent.objects.create(
+                    article=article,
+                    title=fake.sentence(nb_words=3),
+                    image=None,  # You could assign an image here if desired
+                    image_title=fake.sentence(nb_words=2),
+                    content=fake.paragraph(nb_sentences=5)
+                )
+                self.stdout.write(self.style.SUCCESS(f"Created Content for Article: {content.article.title}"))
+
+        self.stdout.write(self.style.SUCCESS("Successfully generated 10 categories, 20 articles, 100 article contents, and created an admin user."))
