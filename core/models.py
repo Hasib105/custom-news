@@ -14,19 +14,17 @@ import datetime
 
 User = settings.AUTH_USER_MODEL
 
-def convert_image(image_field, format=None, quality=None):
+def convert_image(image_field, quality=None):
     """
-    Convert uploaded images to WebP or AVIF format while preserving transparency.
+    Convert uploaded images to WebP format while preserving transparency.
 
     Args:
         image_field (File): The uploaded image file.
-        format (str): Desired format ('webp' or 'avif').
         quality (int): Quality percentage for compression (1-100).
 
     Returns:
         ContentFile: The converted image file.
     """
-    format = format or getattr(settings, "IMAGE_CONVERSION_FORMAT", "webp")
     quality = quality or getattr(settings, "IMAGE_CONVERSION_QUALITY", 75)
 
     try:
@@ -46,23 +44,16 @@ def convert_image(image_field, format=None, quality=None):
     # Prepare a BytesIO buffer to save the converted image
     buffer = io.BytesIO()
 
-    # Determine the format and save accordingly
-    format = format.lower()
-    ext = "avif" if format == "avif" else "webp"
-    img.save(buffer, format=ext.upper(), quality=quality)
+    # Save as WebP format
+    img.save(buffer, format='WEBP', quality=quality)
 
     # Create a new filename with the appropriate extension
-    filename = os.path.splitext(image_field.name)[0] + f".{ext}"
+    filename = os.path.splitext(image_field.name)[0] + ".webp"
 
     # Create a ContentFile from the buffer
     converted_image = ContentFile(buffer.getvalue(), name=filename)
 
     return converted_image
-
-
-
-
-
 
 
 class BaseModel(models.Model):

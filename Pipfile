@@ -16,6 +16,9 @@ faker = "*"
 unidecode = "*"
 python-slugify = "*"
 django-htmlmin = "*"
+djangorestframework = "*"
+djangorestframework-simplejwt = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 

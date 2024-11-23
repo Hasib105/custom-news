@@ -10,13 +10,13 @@ class ArticleContentInline(admin.StackedInline):
     extra = 1  # Defines how many empty inlines to show by default
     fields = ('title', 'image', 'image_title', 'content')  # Fields to display in the inline
 
-    def get_formset(self, request, obj=None, **kwargs):
-        formset = super().get_formset(request, obj, **kwargs)
-        formset.form.base_fields['content'].widget.attrs.update({
-            'class': 'quill-editor',
-            'style': 'height: 500px; overflow-y: auto;'  # Set height and enable scrolling
-        })
-        return formset
+    # def get_formset(self, request, obj=None, **kwargs):
+    #     formset = super().get_formset(request, obj, **kwargs)
+    #     formset.form.base_fields['content'].widget.attrs.update({
+    #         'class': 'quill-editor',
+    #         'style': 'height: 500px; overflow-y: auto;'  # Set height and enable scrolling
+    #     })
+    #     return formset
 
 
 @django_admin.register(Article)
